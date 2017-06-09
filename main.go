@@ -1,15 +1,20 @@
 package main
 
 import (
-	"github.com/dangelzm/cinema-network-api/controllers"
-	"github.com/dangelzm/cinema-network-api/middlewares"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"os"
 	"runtime"
+
+	"github.com/dangelzm/cinema-network-api/controllers"
+	"github.com/dangelzm/cinema-network-api/middlewares"
 )
 
 func main() {
-	port := "8080"
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
 
 	app := gin.Default()
 	app.Use(middlewares.CORS())

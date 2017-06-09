@@ -1,4 +1,4 @@
-package TodoController
+package controllers
 
 import (
 	"github.com/gin-gonic/gin"
@@ -7,7 +7,7 @@ import (
 	"github.com/dangelzm/cinema-network-api/models"
 )
 
-type Controller struct{}
+type TodoController struct{}
 
 var todos = map[string]models.TodoModel{
 	"1": models.TodoModel{Id: 1, Title: "Test1"},
@@ -15,16 +15,16 @@ var todos = map[string]models.TodoModel{
 	"3": models.TodoModel{Id: 3, Title: "Test3"},
 }
 
-func (ctrl *Controller) New(r *gin.RouterGroup) {
-	r.GET("/", getList)
-	r.GET("/:id", getById)
+func (this *TodoController) New(r *gin.RouterGroup) {
+	r.GET("/", this.getList)
+	r.GET("/:id", this.getById)
 }
 
-func getList(c *gin.Context) {
+func (ctrl *TodoController) getList(c *gin.Context) {
 	c.JSON(http.StatusOK, todos)
 }
 
-func getById(c *gin.Context) {
+func (ctrl *TodoController) getById(c *gin.Context) {
 	id := c.Params.ByName("id")
 	c.JSON(http.StatusOK, todos[id])
 }
