@@ -6,18 +6,28 @@ import (
 	"os"
 	"runtime"
 
+	"github.com/dangelzm/cinema-network-api/db"
 	"github.com/dangelzm/cinema-network-api/controllers"
 	"github.com/dangelzm/cinema-network-api/middlewares"
+	"fmt"
 )
 
-func main() {
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
-	}
+const (
+	Port = "8080"
+)
 
+func init() {
+	db.Connect()
+}
+
+func main() {
 	app := gin.Default()
-	app.Use(middlewares.CORS())
+
+	// Middlewares
+	app.Use(middlewares.Connect)
+	app.Use(middlewares.ErrorHandler)
+	app.Use(middlewares.CORS)
+
 
 	app.GET("/api", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
@@ -30,5 +40,12 @@ func main() {
 	controllers.Mount(app.Group("api/todos"), "TodoController")
 
 	app.NoRoute()
+
+	// Start listening
+	port := Port
+	if len(os.Getenv("PORT")) > 0 {
+		port = os.Getenv("PORT")
+	}
+	fmt.Println("Start listening on " + port)
 	app.Run(":" + port)
 }
