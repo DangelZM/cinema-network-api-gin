@@ -10,6 +10,7 @@ import (
 	"github.com/dangelzm/cinema-network-api/controllers"
 	"github.com/dangelzm/cinema-network-api/middlewares"
 	"fmt"
+	"time"
 )
 
 const (
@@ -46,6 +47,15 @@ func main() {
 	if len(os.Getenv("PORT")) > 0 {
 		port = os.Getenv("PORT")
 	}
+
 	fmt.Println("Start listening on " + port)
-	app.Run(":" + port)
+
+	s := &http.Server{
+		Addr:           ":" + port,
+		Handler:        app,
+		ReadTimeout:    10 * time.Second,
+		WriteTimeout:   10 * time.Second,
+		MaxHeaderBytes: 1 << 20,
+	}
+	s.ListenAndServe()
 }
