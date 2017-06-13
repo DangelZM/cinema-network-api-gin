@@ -1,0 +1,14 @@
+version: 0.2
+
+phases:
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Build in progress...
+      - docker run --rm -v "$PWD":/go/src/github.com/dangelzm/cinema-network-api -w /go/src/github.com/dangelzm/cinema-network-api iron/go:dev go get github.com/tools/godep && godep go build -o app
+  post_build:
+    commands:
+      - echo Build completed on `date`
+artifacts:
+  files:
+    - app
