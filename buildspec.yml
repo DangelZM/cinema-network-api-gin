@@ -7,15 +7,12 @@ phases:
       - $(aws ecr get-login --region $AWS_DEFAULT_REGION)
   build:
     commands:
-      - echo Build started on `date`
-      - echo Building Go app...
-      - docker run --rm -v "$PWD":/go/src/github.com/dangelzm/cinema-network-api -w /go/src/github.com/dangelzm/cinema-network-api iron/go:dev go get github.com/tools/godep && godep go build -o app
       - echo Building the Docker image...
       - docker build -t $IMAGE_REPO_NAME .
       - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
   post_build:
     commands:
-      - echo Build completed on `date`
+      - echo Build completed
       - echo Pushing the Docker image...
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
       - echo Create Dockerrun.aws.json file
