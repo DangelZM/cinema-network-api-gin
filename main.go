@@ -6,10 +6,10 @@ import (
 	"os"
 	"runtime"
 
-	"github.com/dangelzm/cinema-network-api/db"
-	"github.com/dangelzm/cinema-network-api/controllers"
-	"github.com/dangelzm/cinema-network-api/middlewares"
 	"fmt"
+	"github.com/dangelzm/cinema-network-api/controllers"
+	"github.com/dangelzm/cinema-network-api/db"
+	"github.com/dangelzm/cinema-network-api/middlewares"
 	"time"
 )
 
@@ -28,7 +28,6 @@ func main() {
 	app.Use(middlewares.Connect)
 	app.Use(middlewares.ErrorHandler)
 	app.Use(middlewares.CORS)
-
 
 	app.GET("/api", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{

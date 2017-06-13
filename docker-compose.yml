@@ -1,0 +1,29 @@
+version: "2"
+services:
+  api:
+    build: .
+    command: "./app"
+    ports:
+      - "3080:8080"
+    depends_on:
+      - mongodb
+    environment:
+      GIN_MODE: "debug"
+      MONGODB_URL: mongodb
+
+  mongodb:
+    ports:
+      - "27080:27017"
+    image: mongo:latest
+    volumes:
+      - "mongodb_cinema:/data/cinema_db"
+    command: --smallfiles --rest
+
+volumes:
+  mongodb_cinema:
+    external:
+      name: mongodb_cinema
+
+networks:
+  default:
+    driver: bridge
